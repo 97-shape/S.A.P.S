@@ -1,6 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
@@ -39,7 +37,7 @@ class AccountUpdateView(UpdateView):
     model = UserData
     context_object_name = 'target_user'
     template_name = "update.html"
-    success_url = reverse_lazy('home:home')
+    success_url = reverse_lazy('dashboardapp:main')
     fields = ['name', 'phone_number', 'email']
 
 @method_decorator(has_ownershp, 'get')

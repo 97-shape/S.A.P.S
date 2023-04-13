@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
+    'rest_framework',
     'home',
     'accountapp',
     'database',
-    'dashboardapp'
+    'dashboardapp',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +139,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # login, logout
-LOGIN_REDIRECT_URL = reverse_lazy('dashboardapp:list')
+LOGIN_REDIRECT_URL = reverse_lazy('dashboardapp:main')
 LOGOUT_REDIRECT_URL = reverse_lazy('accountapp:login')
 
 AUTH_USER_MODEL = 'database.UserData'

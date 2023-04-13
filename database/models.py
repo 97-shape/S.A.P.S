@@ -68,7 +68,7 @@ class DjangoMigrations(models.Model):
 
 class Measurement(models.Model):
     device = models.ForeignKey(Device, models.DO_NOTHING, db_column='device_ID')  # Field name made lowercase.
-    measure_date_time = models.DateTimeField()
+    measure_date = models.DateField()
     measure = models.CharField(max_length=100)
     predictive_measure = models.CharField(max_length=100)
     measurement_accuracy = models.FloatField()

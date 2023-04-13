@@ -12,20 +12,20 @@
     <p>Username -->  {{ request.user.id }}
     <p>Password -->  {{ request.user.password }}</p>
     <p>User is logged in :)</p>
+    <table border="1">
+    <tr>
+        <th>id</th><th>장치 id</th><th>지역코드</th>
+    </tr>
+    {% for d in device %}
+    <tr>
+        <td>{{d.id}}</td>
+        <td>{{d.device_id}}</td>
+        <td>{{d.location_code}}</td>
+    </tr>
+    {% endfor %}
+    </table>
 {% else %}
     <p>User is not logged in :(</p>
 {% endif %}
-<table border="1">
-<tr>
-    <th>id</th><th>장치 id</th><th>지역코드</th>
-</tr>
-{% for d in device %}
-<tr>
-    <td>{{d.id}}</td>
-    <td>{{d.device_id}}</td>
-    <td>{{d.location_code}}</td>
-</tr>
-{% endfor %}
-</table>
 </body>
 </html>
