@@ -1,0 +1,64 @@
+{% extends 'dashboard_base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+
+    <script>
+          Highcharts.chart('container', {
+            chart: {
+              type: 'spline'
+            },
+            title: {
+              text: '태양광 발전량'
+            },
+            xAxis: {
+              categories: [
+                '2023-03-27', '2023-03-28'
+              ]
+            },
+            yAxis: {
+              title: {
+                text: '발전량'
+              },
+              labels: {
+                formatter: function () {
+                  return this.value + 'w';
+                }
+              }
+            },
+            tooltip: {
+              crosshairs: true,
+              shared: true
+            },
+            plotOptions: {
+              spline: {
+                marker: {
+                  radius: 4,
+                  lineColor: '#666666',
+                  lineWidth: 1
+                }
+              }
+            },
+            series: [{
+              name: 'data_first',
+              data: [
+                {% for entry in queryset %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}
+              ],
+            }]
+          });
+        </script>
+{% endblock %}
+
+
+<!--
+series: [{
+  name: 'data_first',
+  data: [
+    {% for entry in queryset %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}
+  ],
+}]
+-->
