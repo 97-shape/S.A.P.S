@@ -24,3 +24,20 @@ def ShowChart(request):
             device_id = device.get('device_id')
         ).values("measure_date", "measure")
     return render(request, 'chart.html', {'queryset':queryset});
+
+"""
+def ShowChart(request):
+    devices = Device.objects.filter(
+        id=request.user.id
+    ).values("device_id");
+    # print(devices[0])
+    return render(request, 'chart.html', {'queryset':getData(devices[0])}, devices);
+
+# 차트 데이터 받아오기
+def getData(device):
+    queryset = Measurement.objects.filter(
+        device_id = device.get('device_id')
+    ).values("measure_date", "measure")
+    # print(queryset)
+    return queryset
+"""

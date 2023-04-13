@@ -5,6 +5,7 @@
 
     <figure class="highcharts-figure">
         <div id="container"></div>
+        <!-- {% for entry in queryset %}{{ entry }}{% if not forloop.last %}, {% endif %}{% endfor %} -->
     </figure>
 
     <script>
@@ -17,7 +18,7 @@
             },
             xAxis: {
               categories: [
-                '2023-03-27', '2023-03-28'
+
               ]
             },
             yAxis: {
@@ -43,13 +44,14 @@
                 }
               }
             },
-            series: [{
-              name: 'data_first',
-              data: [
-                {% for entry in queryset %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}
-              ],
-            }]
-          });
+             series: [{
+                    name: 'data_first',
+                    data: [{% for entry in queryset.data_first %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+                }, {
+                    name: 'data_second',
+                    data: [{% for entry in queryset.data_second %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+                }]
+            });
         </script>
 {% endblock %}
 
