@@ -52,6 +52,17 @@ a {
     }
 }
 
+.table_area {
+    width: 50%;
+    float: left;
+    margin: 1em auto;
+}
+
+.chart_area {
+    width: 50%;
+    float: right;
+}
+
 .highcharts-figure,
 .highcharts-data-table table {
     min-width: 360px;
@@ -93,4 +104,10 @@ a {
 
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
+}
+
+table {
+    width: 80%;
+    margin: auto;
+    text-align:center;
 }

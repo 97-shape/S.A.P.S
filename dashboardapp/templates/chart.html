@@ -3,10 +3,34 @@
 
 {% block content %}
 
-    <figure class="highcharts-figure">
+    <div class="table_area">
+        <div style="width:100%; height:200px;" class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <th>측정일</th>
+                    <th>실측정값</th>
+                    <th>예측값</th>
+                    <th>예측정확도</th>
+                </thead>
+                {% for entry in queryset %}
+                <tr>
+                    <td>{{ entry.measure_date }}</td>
+                    <td>{{ entry.measure }}</td>
+                    <td>{{ entry.predictive_measure }}</td>
+                    <td>{{ entry.measurement_accuracy }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>test</div>
+    </div>
+    <div class="chart_area">
+        <figure class="highcharts-figure">
         <div id="container"></div>
-        <!-- {% for entry in queryset %}{{ entry }}{% if not forloop.last %}, {% endif %}{% endfor %} -->
-    </figure>
+        <!-- {% for entry in queryset %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %} -->
+        </figure>
+    </div>
+    <div style="clear:both"></div>
 
     <script>
           Highcharts.chart('container', {
@@ -14,11 +38,11 @@
               type: 'spline'
             },
             title: {
-              text: '태양광 발전량'
+              text: '{{device_id}}'
             },
             xAxis: {
               categories: [
-
+                {% for entry in queryset %}'{{ entry.measure_date }}',{% if not forloop.last %} {% endif %}{% endfor %}
               ]
             },
             yAxis: {
@@ -45,11 +69,11 @@
               }
             },
              series: [{
-                    name: 'data_first',
-                    data: [{% for entry in queryset.data_first %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+                    name: '실측정값',
+                    data: [{% for entry in queryset %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
                 }, {
-                    name: 'data_second',
-                    data: [{% for entry in queryset.data_second %}{{ entry.measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+                    name: '예측값',
+                    data: [{% for entry in queryset %}{{ entry.predictive_measure }}{% if not forloop.last %}, {% endif %}{% endfor %}]
                 }]
             });
         </script>

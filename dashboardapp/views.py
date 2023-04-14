@@ -14,16 +14,14 @@ def ShowData(request):
 def dashboard_display(request):
     return render(request, "dashboard_base.html");
 
-def ShowChart(request):
-    devices = Device.objects.filter(
-        id=request.user.id
-    ).values("device_id");
+def ShowChart(request, device_id):
+    # print(device_id)
     queryset = {}
-    for device in devices:
-        queryset[device.get('device_id')] = Measurement.objects.filter(
-            device_id = device.get('device_id')
-        ).values("measure_date", "measure")
-    return render(request, 'chart.html', {'queryset':queryset});
+    if Device.objects.filter(id=request.user.id, device_id=device_id):
+        queryset = Measurement.objects.filter(
+            device_id = device_id
+        ).values("measure_date", "measure", "predictive_measure", "measurement_accuracy")
+    return render(request, 'chart.html', {'queryset':queryset, 'device_id':device_id});
 
 """
 def ShowChart(request):

@@ -19,7 +19,7 @@
     {% for d in device %}
     <tr>
         <td>{{d.id}}</td>
-        <td>{{d.device_id}}</td>
+        <td><a href="{% url 'dashboardapp:chart' device_id=d.device_id %}">{{d.device_id}}</a></td>
         <td>{{d.location_code}}</td>
     </tr>
     {% endfor %}
