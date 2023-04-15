@@ -4,9 +4,45 @@
 {% include 'dashboard_head.html' %}
 
 <body>
-    {% include 'dashboard_header.html' %}
+    <div class="saps_header">
+        <label for="menu-btn" style="float: left;">
+            <div style="margin-left:10px; cursor: pointer;">
+                <h1 class="saps_logo" style="margin:0px">
+                    S.A.P.S
+                </h1>
+            </div>
+        </label>
+        <div class="saps_header_navbar", style="float: right;">
+            <span style="margin-right: 0.5rem;">
+                {{request.user.name}}님 로그인
+            </span>
+            <a href="{% url 'accountapp:detail' pk=request.user%}" class="saps_header_nav">
+                <span> 정보수정 </span>
+            </a>
+            <a href="{% url 'accountapp:logout' %}" class="saps_header_nav" style="margin-right: 1rem;">
+                <span> 로그아웃 </span>
+            </a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
     <hr>
 
+    <!-- 사이드바 -->
+    <input id="menu-btn" type="checkbox">
+    <div class="menu-content">
+      <li class="mb-1 ">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+          Home
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
+            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
+            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
+          </ul>
+        </div>
+      </li>
+    </div>
     {% block content %}
     {% endblock %}
 

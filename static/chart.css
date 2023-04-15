@@ -48,9 +48,10 @@ a {
 
 @media screen and (max-width:500px) {
     html {
-        font-size: 13px;
+
     }
 }
+
 
 .table_area {
     width: 50%;
@@ -62,6 +63,8 @@ a {
     width: 50%;
     float: right;
 }
+
+/* 차트 */
 
 .highcharts-figure,
 .highcharts-data-table table {
@@ -106,8 +109,22 @@ a {
     background: #f1f7ff;
 }
 
+/* 데이터 테이블 */
 table {
     width: 80%;
     margin: auto;
     text-align:center;
+}
+
+/* 메뉴 */
+#menu-btn {display:none;}
+#menu-btn:checked + .menu-content { left:0px; }
+
+.menu-content {
+    position:fixed;
+    top:120px;left:-300px;
+    width:300px;height:50%;
+    background:#999;
+    transition:all .35s;
+    z-index : 2;
 }
