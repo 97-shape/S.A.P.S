@@ -30,18 +30,37 @@
     <!-- 사이드바 -->
     <input id="menu-btn" type="checkbox">
     <div class="menu-content">
-      <li class="mb-1 ">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-          Home
-        </button>
-        <div class="collapse show" id="home-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-          </ul>
-        </div>
-      </li>
+        <ul class="mb-1 list-group">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#device-collapse" aria-expanded="true">
+                <i class="bi bi-sun"></i>&nbsp; 등록된 기기 &nbsp;
+            </button>
+            <div class="collapse show" id="device-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    {% if device %}
+                        {% for d in device %}
+                            <li><a href="{% url 'dashboardapp:chart' device_id=d.device_id %}" class="link-dark d-inline-flex text-decoration-none rounded">{{d.device_id}}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        {% for d in object_list %}
+                            <li><a href="{% url 'dashboardapp:chart' device_id=d.device_id %}" class="link-dark d-inline-flex text-decoration-none rounded">{{d.device_id}}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">기기 추가히기</a></li>
+                </ul>
+          </div>
+        </ul>
+        <ul class="mb-1 list-group">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                <i class="bi bi-megaphone"></i>&nbsp; 이용안내 &nbsp;
+            </button>
+            <div class="collapse show" id="home-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'dashboardapp:notice' %}" class="link-dark d-inline-flex text-decoration-none rounded">공지사항</a></li>
+                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">FAQ</a></li>
+                </ul>
+          </div>
+        </ul>
     </div>
     {% block content %}
     {% endblock %}

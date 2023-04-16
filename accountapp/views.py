@@ -6,12 +6,13 @@ from django.views.generic.list import MultipleObjectMixin
 
 from accountapp.customForm import CustomUserCreationForm
 from accountapp.decorators import account_ownership_required
-from database.models import UserData
+from database.models import UserData, Device
+
+from django.shortcuts import render
 
 has_ownershp = [account_ownership_required, login_required]
 
 # Create your views here
-
 
 class AccountCreateView(CreateView):
     model = UserData
@@ -25,11 +26,10 @@ class AccountDetailView(DetailView, MultipleObjectMixin):
     template_name = 'detail.html'
 
     def get_context_data(self, **kwargs):
-        queryset = kwargs.pop('object_list', None)
-        if queryset is None:
-            self.object_list = self.model.objects.all()
-
-        return super().get_context_data(**kwargs)
+        object_list = Device.objects.all()
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        # print(context)
+        return context
 
 @method_decorator(has_ownershp, 'get')
 @method_decorator(has_ownershp, 'post')
@@ -39,6 +39,12 @@ class AccountUpdateView(UpdateView):
     template_name = "update.html"
     success_url = reverse_lazy('dashboardapp:main')
     fields = ['name', 'phone_number', 'email']
+
+    def get_context_data(self, **kwargs):
+        object_list = Device.objects.all()
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        # print(context)
+        return context
 
 @method_decorator(has_ownershp, 'get')
 @method_decorator(has_ownershp, 'post')

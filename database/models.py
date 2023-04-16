@@ -142,3 +142,55 @@ class Xytable(models.Model):
     class Meta:
         managed = False
         db_table = 'xytable'
+
+# DB 1차 테이블 추가(수정)
+
+class WeatherStorage(models.Model):
+    date_time = models.DateTimeField()
+    location_code = models.ForeignKey('Xytable', models.DO_NOTHING, db_column='Location_code')  # Field name made lowercase.
+    sunshine = models.FloatField()
+    temperature = models.FloatField()
+    cloud = models.IntegerField()
+    rainfall = models.FloatField()
+    weather_count = models.AutoField(primary_key=True)
+    sunrise = models.TimeField()
+    sunset = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'weather_storage'
+
+class SolarApi(models.Model):
+    date = models.DateField()
+    cloud = models.FloatField(blank=True, null=True)
+    solar = models.FloatField(blank=True, null=True)
+    num_count = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'solar_api'
+
+
+class SolarApi5Day(models.Model):
+    num_count = models.AutoField(primary_key=True)
+    date = models.DateField()
+    cloud = models.FloatField()
+    solar = models.FloatField()
+    solar_time = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'solar_api_5day'
+
+# 게시판 작업
+
+class Board(models.Model):
+    board_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=64)
+    writer = models.ForeignKey('UserData', models.DO_NOTHING, db_column='writer')
+    write_date = models.DateTimeField()
+    content = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'board'
