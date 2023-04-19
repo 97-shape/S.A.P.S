@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
@@ -20,15 +21,23 @@ class AccountCreateView(CreateView):
     success_url = reverse_lazy('accountapp:login')
     template_name = 'create.html'
 
+    def form_valid(self, form):
+        # 폼이 유효할 경우 호출되는 메서드
+        # 여기에서 특정 필드에 무조건 값을 할당합니다
+        form.instance.is_active = 1
+        form.instance.is_superuser = 0
+        return super().form_valid(form)
+
+
 class AccountDetailView(DetailView, MultipleObjectMixin):
     model = UserData
     context_object_name = 'target_user'
     template_name = 'detail.html'
 
     def get_context_data(self, **kwargs):
-        object_list = Device.objects.all()
+        object_list = Device.objects.filter(id = self.kwargs.get('pk'))
+        # print(self.kwargs.get('pk'), object_list)
         context = super().get_context_data(object_list=object_list, **kwargs)
-        # print(context)
         return context
 
 @method_decorator(has_ownershp, 'get')
@@ -41,9 +50,9 @@ class AccountUpdateView(UpdateView):
     fields = ['name', 'phone_number', 'email']
 
     def get_context_data(self, **kwargs):
-        object_list = Device.objects.all()
+        object_list = Device.objects.filter(id=self.kwargs.get('pk'))
+        # print(self.kwargs.get('pk'), object_list)
         context = super().get_context_data(object_list=object_list, **kwargs)
-        # print(context)
         return context
 
 @method_decorator(has_ownershp, 'get')

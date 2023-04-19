@@ -83,6 +83,8 @@ class UserData(AbstractUser, PermissionsMixin):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=20)
     phone_number = models.CharField(db_column='phone number', max_length=13)
+    is_active = models.IntegerField()
+    is_superuser = models.IntegerField()
     email = models.CharField(db_column='email', max_length=254)
 
     USERNAME_FIELD = 'id'
@@ -90,7 +92,6 @@ class UserData(AbstractUser, PermissionsMixin):
 
     first_name = None
     last_name = None
-    is_superuser = None
     is_staff = None
     last_login = None
     date_joined = None
@@ -145,21 +146,6 @@ class Xytable(models.Model):
 
 # DB 1차 테이블 추가(수정)
 
-class WeatherStorage(models.Model):
-    date_time = models.DateTimeField()
-    location_code = models.ForeignKey('Xytable', models.DO_NOTHING, db_column='Location_code')  # Field name made lowercase.
-    sunshine = models.FloatField()
-    temperature = models.FloatField()
-    cloud = models.IntegerField()
-    rainfall = models.FloatField()
-    weather_count = models.AutoField(primary_key=True)
-    sunrise = models.TimeField()
-    sunset = models.TimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'weather_storage'
-
 class SolarApi(models.Model):
     date = models.DateField()
     cloud = models.FloatField(blank=True, null=True)
@@ -190,6 +176,7 @@ class Board(models.Model):
     writer = models.ForeignKey('UserData', models.DO_NOTHING, db_column='writer')
     write_date = models.DateTimeField()
     content = models.TextField()
+    board_type = models.CharField(max_length=30)
 
     class Meta:
         managed = False
