@@ -61,9 +61,7 @@ def BoardWrite(request, board_type):
     context = {}
     if request.user.id:
         if request.method == 'GET':
-            write_form = BoardWriteForm()
-            context['forms'] = write_form
-            return render(request, 'board/board_write.html', context, {'device':GetData(request.user.id)})
+            return render(request, 'board/board_write.html', {'forms': BoardWriteForm(), 'device':GetData(request.user.id)})
 
         elif request.method == 'POST':
             write_form = BoardWriteForm(request.POST)

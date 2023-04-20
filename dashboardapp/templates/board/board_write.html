@@ -7,9 +7,9 @@
     <form method="POST">
         {% csrf_token %}
         {% for form in forms %}
-        <dvi>
+        <div>
             {{form}}
-        </dvi>
+        </div>
         {% endfor %}
         {% if error %}
         {{ error }}
