@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from dashboardapp.form import BoardWriteForm
-from database.models import Device, Measurement, Board, UserData
+from database.models import Device, Measurement, Board, UserData, Xytable
 
 
 # Create your views here.
@@ -14,12 +15,25 @@ def GetData(user_id):
         id = user_id
     );
     return devices;
+
+# 지역 정보 받아오기
+def GetLoaction(location_code):
+    location = Xytable.objects.filter(
+        location_code = location_code
+    );
+    return location
+
+
 # 현제 이용자가 작성자가 맞는가?
 def is_writer(user_id, board_writer):
     return True if user_id == str(board_writer) else False
+
 # (임시)
 def Dashboard_display(request):
     return render(request, "dashboard_base.html", {'device':GetData(request.user.id)});
+
+def Device_display(request):
+    return render(request, "device.html", {'device':GetData(request.user.id)});
 
 # 게시판
 def NoticeList(request):
@@ -73,7 +87,6 @@ def BoardContent(request, board_type, board_id):
     board = Board.objects.get(
         board_id = board_id
     )
-
     return render(request, 'board/board_content.html',{'board':board, 'device': GetData(request.user.id),
                                                        'previous_url': previous_url, 'is_writer' : is_writer(request.user.id, board.writer)})
 
@@ -111,3 +124,5 @@ def DisplayData(request, device_id):
             device_id = device_id
         ).values("measure_date", "measure", "predictive_measure", "measurement_accuracy")
     return render(request, 'chart.html', {'queryset':queryset, 'device_id':device_id, 'device':GetData(request.user.id)});
+
+# 기기 등록

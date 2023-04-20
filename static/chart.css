@@ -35,13 +35,11 @@ a {
 
 .table_area {
     width: 50%;
-    float: left;
     margin: 1em auto;
 }
 
 .chart_area {
     width: 50%;
-    float: right;
 }
 
 /* 차트 */

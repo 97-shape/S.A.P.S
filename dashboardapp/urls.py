@@ -6,7 +6,10 @@ app_name = "dashboardapp"
 urlpatterns = [
     # path('list/', views.ShowData, name='list'),
     path('main/', views.Dashboard_display, name='main'),
+    path('device/', views.Device_display, name='device'),
     path('chart/<str:device_id>', views.DisplayData, name='chart'),
+
+    # 게시판
     path('notice', views.NoticeList, name='notice'),
     path('FAQ', views.FAQList, name='FAQ'),
     path('write/<str:board_type>/', views.BoardWrite, name='write'),

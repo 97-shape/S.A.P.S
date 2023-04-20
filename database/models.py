@@ -40,6 +40,9 @@ class Device(models.Model):
     id = models.ForeignKey('UserData', models.DO_NOTHING, db_column='ID')  # Field name made lowercase.
     device_id = models.CharField(db_column='device_ID', primary_key=True, max_length=20)  # Field name made lowercase.
     location_code = models.ForeignKey('Xytable', models.DO_NOTHING, db_column='Location_code')  # Field name made lowercase.
+    area = models.CharField(max_length=20)
+    power_generation_capacity = models.CharField(db_column='power generation capacity', max_length=20)  # Field renamed to remove unsuitable characters.
+    efficiency = models.FloatField()
 
     class Meta:
         managed = False
@@ -122,7 +125,6 @@ class WeatherStorage(models.Model):
     class Meta:
         managed = False
         db_table = 'weather_storage'
-
 
 class Xytable(models.Model):
     location_code = models.BigIntegerField(db_column='Location_code', primary_key=True)  # Field name made lowercase.
