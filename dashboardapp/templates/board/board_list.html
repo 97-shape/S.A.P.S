@@ -15,7 +15,7 @@
     {% for board in boards %}
     <div class="card w-75" style="margin: 1rem auto;">
         <div class="card-body d-flex w-100 justify-content-between" style=" cursor: pointer;" onclick="redirectToContent('{{ board.board_type }}', '{{ board.board_id }}');">
-            <h5 class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin: auto;">{{board.title}}</h5>
+            <h5 class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin: auto; max-width:50%">{{board.title}}</h5>
             <div>
                 <p class="card-text" style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis;">{{board.writer}}</p>
                 <p class="card-text">{{board.write_date}}</p>
