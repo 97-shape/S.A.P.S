@@ -117,10 +117,13 @@ def BoardEdit(request, board_id):
 def DisplayData(request, device_id):
     # print(device_id)
     queryset = {}
+    location = Device.objects.filter(id=request.user.id, device_id=device_id)
     if Device.objects.filter(id=request.user.id, device_id=device_id):
         queryset = Measurement.objects.filter(
             device_id = device_id
         ).values("measure_date", "measure", "predictive_measure", "measurement_accuracy")
-    return render(request, 'chart.html', {'queryset':queryset, 'device_id':device_id, 'device':GetData(request.user.id)});
+        return render(request, 'chart.html', {'queryset':queryset, 'device_id':device_id, 'device':GetData(request.user.id), 'location': location});
+    else:
+        return HttpResponse('Invalid Request')
 
 # 기기 등록

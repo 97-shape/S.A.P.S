@@ -4,13 +4,10 @@
 {% block content %}
     <p class="text-center fw-lighter">최근 한달의 데이터를 제공합니다.</p>
     <div class="table_area float-end">
-        <div style="display:flex; justify-content:center; align-items:center;">
-            <div style="width: 100%; max-width:1000px; margin:auto;" id="ww_4b43ea65a0ac8" v='1.3' loc='id' a='{"t":"horizontal","lang":"ko","sl_lpl":1,"ids":[],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-                Weather Data Source:
-                <a href="https://wetterlang.de/seoul_wetter_30_tage/" id="ww_4b43ea65a0ac8_u" target="_blank">Wetter 30 tage vorhersage Seoul</a>
-            </div>
-            <script async src="https://app1.weatherwidget.org/js/?id=ww_4b43ea65a0ac8"></script>
-        </div>
+        <a class="weatherwidget-io mb-3" href="https://forecast7.com/en/35d87128d60/daegu/" data-label_1="DAEGU" data-label_2="WEATHER" data-theme="pure" >DAEGU WEATHER</a>
+        <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+        </script>
         <div style="width:100%; height:200px;" class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -39,6 +36,7 @@
     <div style="clear:both"></div>
     <script>
           Highcharts.chart('container', {
+            colors: ['#7595F5', '#F65757'],
             chart: {
               type: 'spline'
             },
@@ -68,7 +66,7 @@
               spline: {
                 marker: {
                   radius: 4,
-                  lineColor: '#666666',
+                  lineColor: '#757575',
                   lineWidth: 1
                 }
               }
