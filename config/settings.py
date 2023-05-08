@@ -29,6 +29,7 @@ SECRET_KEY = my_setting.SECRET_KEY
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     "ec2-3-38-153-91.ap-northeast-2.compute.amazonaws.com"
 ]
 
