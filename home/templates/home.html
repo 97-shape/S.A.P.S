@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+    {% load static %}
+    {% load bootstrap4 %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no user-scalable=yes">
+        <title>S.A.P.S</title>
+
+        <!-- BOOTSTRAP LINK -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+
+        <!-- GOOGLE FONT LINK -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <!--     GOOGLE MATERIAL ICONS     -->
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet">
+
+        <!--  DEFAULT CSS LINK  -->
+        <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, span {
+            font-family: 'Noto Sans KR';
+            }
+        </style>
+    </head>
+    <body>
+        <header class="">
+            <div class="headerWrap">
+                <h1 class="fs-3">S.A.P.S</h1>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'accountapp:login' %}" class="btn_style">
+                        <span>시작하기</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'dashboardapp:main' %}" class="btn_style">
+                        <span>시작하기</span>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="progressWrap">
+                <div class="bar"></div>
+            </div>
+        </header>
+        {% load static %}
+        <div class="coverWrap">
+            <div class="dimd"></div>
+            <div class="coverTitle">
+                <h1>Solar-energy A.I. Predict System</h1>
+                <p>태양광 발전량 인공지능 예측 시스템</p>
+            </div>
+        </div>
+        <div class="contWrap">
+            <div class="contentInnerWrap">
+                <h4>The standard Lorem Ipsum passage, used since the 1500s</h4>
+                <p>
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum."
+                </p>
+            </div>
+        </div>
+        <script>
+            const header = document.querySelector("header");
+            const progressBar = document.querySelector(".bar");
+            const coverTitle = document.querySelector(".coverTitle");
+            const coverWrap = document.querySelector(".coverWrap");
+            const dimd = coverWrap.querySelector(".dimd");
+            const contWrap = document.querySelector(".contWrap");
+
+            let scrollNum = 0;
+            let documentHeight = 0;
+            let per = 0;
+            const coverHeight = window.innerHeight;
+
+            coverWrap.style.height = coverHeight + "px";
+            contWrap.style.marginTop = coverHeight + "px";
+
+            window.addEventListener("scroll", () => {
+                scrollNum = window.scrollY;
+                documentHeight =
+                    document.body.scrollHeight + coverHeight - window.innerHeight;
+
+                per = percent(scrollNum, documentHeight);
+                progressBar.style.width = per + "%";
+
+                if (scrollNum >= coverHeight) {
+                    header.classList.add("fixed");
+                } else {
+                    header.classList.remove("fixed");
+                    coverTitle.style.top = -scrollNum / 5 + "px";
+                    coverWrap.style.backgroundPosition = `center ${-scrollNum / 15}px`;
+                    dimd.style.backgroundColor = `rgba(0, 0, 0, ${0.4 + scrollNum / 1000})`;
+                }
+            });
+
+            const percent = (num, totalNum) => {
+                return ((num / totalNum) * 100).toFixed(0);
+            };
+
+        </script>
+    </body>
+</html>
