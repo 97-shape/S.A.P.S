@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+from home import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', include('home.urls')),
     path('accounts/', include('accountapp.urls')),
     path('dashboard/', include('dashboardapp.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('', views.redirect_home, name="redirect_home"),
 ]
 
 if settings.DEBUG:
