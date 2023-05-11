@@ -1,9 +1,10 @@
+import device as device
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from dashboardapp.form import BoardWriteForm
+from dashboardapp.form import BoardWriteForm, DeviceForm
 from database.models import Device, Measurement, Board, UserData, Xytable
 
 
@@ -33,7 +34,7 @@ def Dashboard_display(request):
     return render(request, "dashboard_base.html", {'device':GetData(request.user.id)});
 
 def Device_display(request):
-    return render(request, "device.html", {'device':GetData(request.user.id)});
+    return render(request, "device/device.html", {'device':GetData(request.user.id)});
 
 # 게시판
 def NoticeList(request):
@@ -127,3 +128,15 @@ def DisplayData(request, device_id):
         return HttpResponse('Invalid Request')
 
 # 기기 등록
+
+# 기기 수정
+def DeviceUpdate(request, device_id):
+    devices = get_object_or_404(Device, device_id=device_id)
+    if request.method == 'POST':
+        form = DeviceForm(request.POST, instance=devices)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboardapp:device')
+    else:
+        form = DeviceForm(instance=devices)
+    return render(request, 'device/device_update.html', {'form': form, 'device_id': device_id})
