@@ -48,7 +48,16 @@ class BoardWriteForm(forms.ModelForm):
             self.title = title
             self.content = content
 
-class DeviceForm(forms.ModelForm):
+class DeviceUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = ['area', 'power_generation_capacity']
+
+    # 필드명 바꿔주기
+    area = forms.CharField(label="총 면적")
+    power_generation_capacity = forms.CharField(label="총 발전량")
+
+class DeviceCreateForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ['area', 'power_generation_capacity']

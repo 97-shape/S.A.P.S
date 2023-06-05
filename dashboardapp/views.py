@@ -1,10 +1,11 @@
 import device as device
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from dashboardapp.form import BoardWriteForm, DeviceForm
+from dashboardapp.form import BoardWriteForm, DeviceUpdateForm, DeviceCreateForm
 from database.models import Device, Measurement, Board, UserData, Xytable
 
 
@@ -81,7 +82,7 @@ def BoardWrite(request, board_type):
             return HttpResponse('Invalid Request')
     return HttpResponse('Invalid Request')
 
-def BoardContent(request, board_type, board_id):
+def BoardContent(request, board_id):
     previous_url = request.META.get('HTTP_REFERER', '/')  # 이전 목록으로
     board = Board.objects.get(
         board_id = board_id
@@ -128,15 +129,45 @@ def DisplayData(request, device_id):
         return HttpResponse('Invalid Request')
 
 # 기기 등록
+@login_required
+def DeviceCreate(request):
+    if request.method == 'POST':
+        form = DeviceCreateForm(request.POST)
+        if form.is_valid():
+            device.form.save()
+            return redirect('dashboardapp:device')
+    else:
+        form = DeviceCreateForm()
 
+    return render(request, 'device/device_create.html', {'form': form, 'device':GetData(request.user.id)})
+
+def get_districts(request):
+    city = request.GET.get('city', None)
+    districts = Xytable.objects.filter(city=city).values_list('district', flat=True).distinct()
+
+    # HTML 옵션 태그로 반환
+    options = ''.join(['<option value="{0}">{0}</option>'.format(d) for d in districts])
+    return HttpResponse(options)
+
+def get_area(request):
+    city = request.GET.get('city', None)
+    district = request.GET.get('district', None)
+    print(city)
+    districts = Xytable.objects.filter(city=city, district=district).values_list('area', flat=True).distinct()
+
+    # HTML 옵션 태그로 반환
+    options = ''.join(['<option value="{0}">{0}</option>'.format(d) for d in districts])
+    return HttpResponse(options)
+
+@login_required
 # 기기 수정
 def DeviceUpdate(request, device_id):
     devices = get_object_or_404(Device, device_id=device_id)
     if request.method == 'POST':
-        form = DeviceForm(request.POST, instance=devices)
+        form = DeviceUpdateForm(request.POST, instance=devices)
         if form.is_valid():
             form.save()
             return redirect('dashboardapp:device')
     else:
-        form = DeviceForm(instance=devices)
-    return render(request, 'device/device_update.html', {'form': form, 'device_id': device_id})
+        form = DeviceUpdateForm(instance=devices)
+    return render(request, 'device/device_update.html', {'form': form, 'device_id': device_id, 'device':GetData(request.user.id)})

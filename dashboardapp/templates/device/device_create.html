@@ -1,0 +1,70 @@
+{% extends 'dashboard_base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div style="max-width: 720px; margin: 4rem auto;">
+    <div style="max-height:300px;" class="table-responsive">
+        <select id="city" onchange="updateDistricts()">
+          <option value="">시/도 선택</option>
+          <option value="서울특별시">서울특별시</option>
+          <option value="부산광역시">부산광역시</option>
+        </select>
+        <select id="district" onchange="updateArea()" disabled>
+          <option value="">구/군 선택</option>
+        </select>
+        <select id="area" name="area" disabled>
+          <option value="">동 선택</option>
+        </select>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-primary">저장하기</button>
+        </form>
+    </div>
+</div>
+
+<script language="JavaScript">
+function updateDistricts() {
+  var citySelect = document.getElementById('city');
+  var districtSelect = document.getElementById('district');
+  var townSelect = document.getElementById('town');
+
+  var city = citySelect.value;
+
+  // AJAX 요청을 통해 선택된 시/도에 해당하는 구/군 목록을 가져옴
+  var url = '/dashboard/device/get_districts/?city=' + encodeURIComponent(city);
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      // 응답을 받은 후 선택 상자 업데이트
+      districtSelect.innerHTML = xhr.responseText;
+      districtSelect.disabled = false;
+      townSelect.innerHTML = '<option value="">동 선택</option>';
+      townSelect.disabled = true;
+    }
+  };
+  xhr.send();
+}
+
+function updateArea() {
+  var citySelect = document.getElementById('city');
+  var districtSelect = document.getElementById('district');
+  var areaSelect = document.getElementById('area');
+
+  var city = citySelect.value;
+  var district = districtSelect.value;
+
+  var url = '/dashboard/device/get_area/?city=' + encodeURIComponent(city) + '&district=' + encodeURIComponent(district);
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      areaSelect.innerHTML = xhr.responseText;
+      areaSelect.disabled = false;
+    }
+  };
+  xhr.send();
+}
+</script>
+{% endblock %}
