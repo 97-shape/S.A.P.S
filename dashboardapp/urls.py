@@ -18,8 +18,8 @@ urlpatterns = [
 
     path('device/', views.Device_display, name='device'),
     path('device/update/<str:device_id>/', views.DeviceUpdate, name='device_update'),
-    path('device/create/', views.DeviceCreate, name='device_update'),
+    path('device/create/', views.DeviceCreate, name='device_create'),
 
     path('device/get_districts/', views.get_districts, name="get_district"),
-    path('device/get_area/', views.get_area, name="get_area"),
+    path('device/get_dong/', views.get_dong, name="get_dong"),
 ]

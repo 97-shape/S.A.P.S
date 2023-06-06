@@ -30,7 +30,7 @@
         </table>
     </div>
     {% if request.user.id %}
-        <a href="#" class="mx-2 btn btn-primary btn-sm float-end">추가</a>
+        <a href="{% url 'dashboardapp:device_create' %}" class="mx-2 btn btn-primary btn-sm float-end">추가</a>
     {% endif %}
 </div>
 {% endblock %}

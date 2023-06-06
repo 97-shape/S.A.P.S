@@ -134,13 +134,32 @@ def DeviceCreate(request):
     if request.method == 'POST':
         form = DeviceCreateForm(request.POST)
         if form.is_valid():
-            device.form.save()
+            device = form.save(commit=False)
+            city = request.POST.get('city')
+            district = request.POST.get('district')
+            print(device.area)
+            area = request.POST.get('dong')
+
+            device.id = UserData.objects.get(id=request.user.id)
+
+            print(city, district, area)
+
+            try:
+                location_code = Xytable.objects.get(city=city, district=district, area=area)
+                device.location_code = location_code
+                print("location: ", location_code)
+                device.save()
+            except Xytable.DoesNotExist:
+                print("error")
+                pass
+
             return redirect('dashboardapp:device')
     else:
         form = DeviceCreateForm()
 
     return render(request, 'device/device_create.html', {'form': form, 'device':GetData(request.user.id)})
 
+@login_required
 def get_districts(request):
     city = request.GET.get('city', None)
     districts = Xytable.objects.filter(city=city).values_list('district', flat=True).distinct()
@@ -149,10 +168,10 @@ def get_districts(request):
     options = ''.join(['<option value="{0}">{0}</option>'.format(d) for d in districts])
     return HttpResponse(options)
 
-def get_area(request):
+@login_required
+def get_dong(request):
     city = request.GET.get('city', None)
     district = request.GET.get('district', None)
-    print(city)
     districts = Xytable.objects.filter(city=city, district=district).values_list('area', flat=True).distinct()
 
     # HTML 옵션 태그로 반환
