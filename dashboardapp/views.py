@@ -42,15 +42,15 @@ def NoticeList(request):
     boards, paginator = BoardList('notice', request.GET.get('page'))
     return render(request, "board/board_list.html", {'boards': boards, 'paginator': paginator, 'board_type': 'notice', 'device': GetData(request.user.id)});
 
-def FAQList(request):
-    boards, paginator = BoardList('FAQ', request.GET.get('page'))
-    return render(request, "board/board_list.html", {'boards': boards, 'paginator': paginator, 'board_type': 'FAQ', 'device': GetData(request.user.id)});
+def PostList(request):
+    boards, paginator = BoardList('post', request.GET.get('page'))
+    return render(request, "board/board_list.html", {'boards': boards, 'paginator': paginator, 'board_type': 'post', 'device': GetData(request.user.id)});
 
 def BoardList(board_type, page):
     boards = Board.objects.filter(
         board_type = board_type
     ).order_by('-board_id');
-    paginator = Paginator(boards, 1)
+    paginator = Paginator(boards, 4)
 
     try:
         page_board = paginator.page(page)
@@ -82,7 +82,7 @@ def BoardWrite(request, board_type):
             return HttpResponse('Invalid Request')
     return HttpResponse('Invalid Request')
 
-def BoardContent(request, board_id):
+def BoardContent(request, board_type, board_id):
     previous_url = request.META.get('HTTP_REFERER', '/')  # 이전 목록으로
     board = Board.objects.get(
         board_id = board_id
@@ -98,8 +98,8 @@ def BoardDelete(request, board_type, board_id):
     board.delete()
     if board_type == 'notice':
         return redirect('dashboardapp:notice')
-    elif board_type == 'FAQ':
-        return redirect('dashboardapp:FAQ')
+    elif board_type == 'post':
+        return redirect('dashboardapp:post')
     else:
         return HttpResponse('Invalid Request')
 

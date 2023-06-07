@@ -10,7 +10,7 @@ urlpatterns = [
 
     # 게시판
     path('notice', views.NoticeList, name='notice'),
-    path('FAQ', views.FAQList, name='FAQ'),
+    path('post', views.PostList, name='post'),
     path('write/<str:board_type>/', views.BoardWrite, name='write'),
     path('content/<str:board_type>/<int:board_id>/', views.BoardContent, name='content'),
     path('edit/<int:board_id>/', views.BoardEdit, name='edit'),
