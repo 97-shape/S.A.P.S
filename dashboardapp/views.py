@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from dashboardapp.form import BoardWriteForm, DeviceUpdateForm, DeviceCreateForm
-from database.models import Device, Measurement, Board, UserData, Xytable
+from database.models import Device, Measurement, Board, UserData, Xytable, WeatherStorageDay
 
 
 # Create your views here.
@@ -32,7 +32,7 @@ def is_writer(user_id, board_writer):
 
 # (임시)
 def Dashboard_display(request):
-    return render(request, "dashboard_base.html", {'device':GetData(request.user.id)});
+    return render(request, "main.html", {'device':GetData(request.user.id)});
 
 def Device_display(request):
     return render(request, "device/device.html", {'device':GetData(request.user.id)});
@@ -117,14 +117,15 @@ def BoardEdit(request, board_id):
 
 # 차트 밑 표 구성을 위한 데이터 전송
 def DisplayData(request, device_id):
-    # print(device_id)
     queryset = {}
-    location = Device.objects.filter(id=request.user.id, device_id=device_id)
-    if Device.objects.filter(id=request.user.id, device_id=device_id):
+    device = Device.objects.get(id=request.user.id, device_id=device_id)
+    # db에는 현재 날짜 기준으로 2일치가 추가 저장되기 때문에 역순으로 3개만 가져와 준다.
+    weather = WeatherStorageDay.objects.filter(location_code=device.location_code).order_by('-date')[:3];
+    if device:
         queryset = Measurement.objects.filter(
             device_id = device_id
-        ).values("measure_date", "measure", "predictive_measure", "measurement_accuracy")
-        return render(request, 'chart.html', {'queryset':queryset, 'device_id':device_id, 'device':GetData(request.user.id), 'location': location});
+        ).order_by('-measure_date')[:30].values("measure_date", "measure", "predictive_measure", "measurement_accuracy")
+        return render(request, 'chart.html', {'queryset': list(queryset)[::-1], 'device_id': device_id, 'device': GetData(request.user.id), 'my_device': device, 'weather': reversed(weather)})
     else:
         return HttpResponse('Invalid Request')
 

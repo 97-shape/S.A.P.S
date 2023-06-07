@@ -111,20 +111,22 @@ class UserData(AbstractUser, PermissionsMixin):
 
 
 
-class WeatherStorage(models.Model):
-    date_time = models.DateTimeField()
+class WeatherStorageDay(models.Model):
+    date = models.CharField(db_column='Date', primary_key=True, max_length=10)  # Field name made lowercase.
     location_code = models.ForeignKey('Xytable', models.DO_NOTHING, db_column='Location_code')  # Field name made lowercase.
-    sunshine = models.FloatField()
-    temperature = models.FloatField()
-    cloud = models.IntegerField()
-    rainfall = models.FloatField()
-    weather_count = models.AutoField(primary_key=True)
-    sunrise = models.TimeField()
-    sunset = models.TimeField()
+    sunrise = models.FloatField(db_column='Sunrise')  # Field name made lowercase.
+    sunset = models.FloatField(db_column='Sunset')  # Field name made lowercase.
+    min_temp = models.FloatField(db_column='Min_Temp')  # Field name made lowercase.
+    max_temp = models.FloatField(db_column='Max_Temp')  # Field name made lowercase.
+    rainfall = models.FloatField(db_column='Rainfall')  # Field name made lowercase.
+    wind_speed = models.FloatField(db_column='Wind_speed')  # Field name made lowercase.
+    humidity = models.FloatField(db_column='Humidity')  # Field name made lowercase.
+    cloud = models.FloatField(db_column='Cloud')  # Field name made lowercase.
+    predict_solar_power = models.FloatField()
 
     class Meta:
         managed = False
-        db_table = 'weather_storage'
+        db_table = 'weather_storage_Day'
 
 class Xytable(models.Model):
     location_code = models.BigIntegerField(db_column='Location_code', primary_key=True)  # Field name made lowercase.
